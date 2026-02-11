@@ -11,10 +11,8 @@ from .models import Kost, FasilitasUmum
 model_path = os.path.join(settings.BASE_DIR, 'property', 'ml_models', 'price_predictor.joblib')
 try:
     AI_MODEL = joblib.load(model_path)
-    print("✅ AI Model loaded in Serializer")
-except:
+except FileNotFoundError:
     AI_MODEL = None
-    print("⚠️ AI Model not found. Run train_model first.")
 
 class KostSerializer(GeoFeatureModelSerializer):
     lokasi = GeometryField()

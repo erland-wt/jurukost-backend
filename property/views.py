@@ -14,10 +14,8 @@ from .serializers import KostSerializer, KostMapSerializer
 model_path = os.path.join(settings.BASE_DIR, 'property', 'ml_models', 'price_predictor.joblib')
 try:
     PRICE_MODEL = joblib.load(model_path)
-    print("✅ AI Model loaded in views")
 except Exception:
     PRICE_MODEL = None
-    print("⚠️ AI Model not found in views. Run train_model first.")
 
 class KostListAPIView(generics.ListAPIView):
     queryset = Kost.objects.all()
