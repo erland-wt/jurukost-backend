@@ -23,7 +23,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy Project
 COPY . .
-RUN echo "⬇️⬇️⬇️ DAFTAR FILE & FOLDER DI ROOT ⬇️⬇️⬇️" && ls -la
 
-# Perintah menjalankan server
+RUN python manage.py migrate && python manage.py loaddata data_kost_jakarta.json
+
 CMD ["gunicorn", "backend.wsgi:application", "--bind", "0.0.0.0:8000"]
