@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgis/postgis:15-3.3
+    container_name: juragankost_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=juragankost
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=rahasia
+    ports:
+      - "5433:5432"
+
+volumes:
+  postgres_data:
