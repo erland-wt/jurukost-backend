@@ -26,4 +26,6 @@ COPY . .
 
 RUN python manage.py migrate && python manage.py loaddata data_kost_jakarta.json
 
+RUN python createsuper.py
+
 CMD ["gunicorn", "backend.wsgi:application", "--bind", "0.0.0.0:8000"]
