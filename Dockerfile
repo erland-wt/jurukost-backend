@@ -1,7 +1,7 @@
-# Gunakan Python 3.12 (sesuai fix sebelumnya)
+# Gunakan Python 3.12
 FROM python:3.12-slim
 
-# Install system dependencies (GDAL untuk PostGIS)
+# Install GDAL (Wajib untuk GeoDjango/PostGIS)
 RUN apt-get update && apt-get install -y \
     binutils \
     libproj-dev \
@@ -10,23 +10,19 @@ RUN apt-get update && apt-get install -y \
     python3-gdal \
     && rm -rf /var/lib/apt/lists/*
 
-# Set environment variables
+# Setup Environment
 ENV PYTHONUNBUFFERED=1
-ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONPATH=/app
 
-# Set working directory
+# Setup Folder Kerja
 WORKDIR /app
 
-# Copy requirements dan install dependencies
+# Install Dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy seluruh project ke dalam container
+# Copy Project
 COPY . .
 
-# Pastikan folder tempat manage.py berada ditambahkan ke PYTHONPATH
-ENV PYTHONPATH=/app
-
-# Perintah menjalankan server
-# Pastikan 'juragankost' sesuai dengan nama folder yang berisi settings.py
-CMD ["gunicorn", "backend.wsgi:application", "--bind", "0.0.0.0:8000"]
+# Jalankan Server (Ganti 'juragankost' sesuai nama folder project django anda)
+CMD ["gunicorn", "juragankost.wsgi:application", "--bind", "0.0.0.0:8000"]
