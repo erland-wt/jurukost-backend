@@ -1,7 +1,7 @@
 # Gunakan Python 3.12
 FROM python:3.12-slim
 
-# Install GDAL (Wajib untuk GeoDjango/PostGIS)
+# Install GDAL (Wajib)
 RUN apt-get update && apt-get install -y \
     binutils \
     libproj-dev \
@@ -23,6 +23,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy Project
 COPY . .
+RUN echo "⬇️⬇️⬇️ DAFTAR FILE & FOLDER DI ROOT ⬇️⬇️⬇️" && ls -la
 
-# Jalankan Server (Ganti 'juragankost' sesuai nama folder project django anda)
+# Perintah menjalankan server
 CMD ["gunicorn", "backend.wsgi:application", "--bind", "0.0.0.0:8000"]
