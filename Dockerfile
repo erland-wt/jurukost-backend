@@ -1,7 +1,7 @@
-# Gunakan Python Image
+# Gunakan Python 3.12 (sesuai fix sebelumnya)
 FROM python:3.12-slim
 
-# Install Library Geo-Spatial (GDAL/GEOS) Wajib untuk PostGIS
+# Install system dependencies (GDAL untuk PostGIS)
 RUN apt-get update && apt-get install -y \
     binutils \
     libproj-dev \
@@ -10,18 +10,23 @@ RUN apt-get update && apt-get install -y \
     python3-gdal \
     && rm -rf /var/lib/apt/lists/*
 
-# Setup Folder Kerja
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+
+# Set working directory
 WORKDIR /app
 
-# Copy Requirements & Install
+# Copy requirements dan install dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy Project Code
+# Copy seluruh project ke dalam container
 COPY . .
 
-# Collect Static (Jika ada)
-# RUN python manage.py collectstatic --noinput
+# Pastikan folder tempat manage.py berada ditambahkan ke PYTHONPATH
+ENV PYTHONPATH=/app
 
 # Perintah menjalankan server
-CMD ["gunicorn", "juragankost.wsgi:application", "--bind", "0.0.0.0:8000"]
+# Pastikan 'juragankost' sesuai dengan nama folder yang berisi settings.py
+CMD ["gunicorn", "backend.wsgi:application", "--bind", "0.0.0.0:8000"]
